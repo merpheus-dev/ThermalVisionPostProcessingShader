@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Serialization;
 
 public class ActivateGoggles : MonoBehaviour
 {
@@ -10,9 +11,8 @@ public class ActivateGoggles : MonoBehaviour
     public LayerMask Hot;
     public GameObject PostProcessObject;
 
-#pragma warning disable
-    [SerializeField]
-    private Material Material;
+    [SerializeField,FormerlySerializedAs("Material")]
+    private Material _material;
 
     private Material SkyboxMaterial;
 
@@ -32,12 +32,12 @@ public class ActivateGoggles : MonoBehaviour
         foreach (var renderer in renderers)
             renderer.gameObject.layer = 10;
 
-        Material.SetColor("_MainColor", Color.white);
+        _material.SetColor("_MainColor", Color.white);
         foreach (var hotObject in HotObjects)
         {
             HotObjectMaterialCache.Add(hotObject, hotObject.material);
             hotObject.gameObject.layer = 9;
-            hotObject.material = Material;
+            hotObject.material = _material;
         }
 
         SkyboxMaterial = RenderSettings.skybox;
@@ -55,7 +55,7 @@ public class ActivateGoggles : MonoBehaviour
         foreach (var renderer in renderers)
             renderer.gameObject.layer = 0;
 
-        Material.SetColor("_MainColor", Color.white);
+        _material.SetColor("_MainColor", Color.white);
         foreach (var hotObject in HotObjects)
         {
             hotObject.gameObject.layer = 0;
